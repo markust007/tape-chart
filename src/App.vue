@@ -19,7 +19,7 @@
       <v-toolbar color="teal" dark fixed app>
         <v-toolbar-side-icon @click.stop="drawer = !drawer">
           <v-icon large color="white" v-if="drawer">clear</v-icon>
-          <v-icon large color="white" v-else>add</v-icon>
+          <v-icon large color="white" v-else>menu</v-icon>
         </v-toolbar-side-icon>
         <v-toolbar-title>Tape Chart</v-toolbar-title>
       </v-toolbar>
