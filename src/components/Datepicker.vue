@@ -8,8 +8,7 @@
     lazy
     transition="scale-transition"
     offset-y
-    full-width
-    min-width="290px"
+    min-width="100px"
   >
     <v-text-field
       slot="activator"
@@ -23,7 +22,7 @@
     <v-date-picker v-model="date" no-title scrollable>
       <v-spacer></v-spacer>
       <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-      <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+      <v-btn flat color="primary" @click="saveDate">OK</v-btn>
     </v-date-picker>
   </v-menu>
 </template>
@@ -34,6 +33,7 @@ export default {
   name: 'Datepicker',
   data () {
     return {
+      date: null,
       menu: false
     }
   },
@@ -42,11 +42,32 @@ export default {
       if(!this.date) {
         return moment().format('MMM Do YY');
       } else {
+        // this.$emit('newDate', this.date)
         return moment(this.date).format('MMM Do YY');
       }
     }
   },
-  props: ['date']
+  methods: {
+    saveDate() {
+      this.$refs.menu.save(this.date)
+      this.$emit('newDate', this.date)
+    },
+    left() {
+      if(!this.date) {
+        this.date = moment().subtract(7, 'days').format('YYYY-MM-DD')
+      } else {
+        this.date = moment(this.date).subtract(7, 'days').format('YYYY-MM-DD')
+      }
+    },
+    right() {
+      if(!this.date) {
+        this.date = moment().add(7, 'days').format('YYYY-MM-DD')
+      } else {
+        this.date = moment(this.date).add(7, 'days').format('YYYY-MM-DD')
+      }
+    }
+  },
+  props: []
 }
 </script>
 
