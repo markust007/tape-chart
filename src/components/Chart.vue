@@ -1,19 +1,14 @@
 <template>
   <div class="calendar">
         <div class="calendar__header">
-          <div>{{ newDate | moment('MMM D') }}</div>
-          <div>{{ newDate | moment("add", "1 days", 'MMM D') }}</div>
-          <div>{{ newDate | moment("add", "2 days", 'MMM D') }}</div>
-          <div>{{ newDate | moment("add", "3 days", 'MMM D') }}</div>
-          <div>{{ newDate | moment("add", "4 days", 'MMM D') }}</div>
-          <div>{{ newDate | moment("add", "5 days", 'MMM D') }}</div>
-          <div>{{ newDate | moment("add", "6 days", 'MMM D') }}</div>
+          <div v-for="day in days">{{day | moment('MMM D')}}</div>
         </div>
         <div class="calendar__week" v-for="(item, index) in units">
           <span v-for="(r, id) in res" v-if="r.unit == item && r.depart >= arrive && r.depart < leave" :style="[leftStyle(r.arrival), widthStyle(r.arrival, r.depart)]">
-            {{r.customer}}
+            <v-icon left size="20" color="white" style="verticalAlign:top;padding:5px 0 0 5px;">person</v-icon><p>{{r.customer}}</p>
           </span>
-          <div class="calendar__day day" v-for="day in days"></div>
+          <div class="calendar__day day" v-for="day in days">
+          </div>
         </div>
       </div>
 </template>
@@ -30,17 +25,17 @@ export default {
   },
   computed: {
     days() {
-      let num;
-      if(window.outerWidth < 480) {
-        num = 4
-      } else if(window.outerWidth < 768) {
-        num = 5
-      } else if(window.outerWidth < 1024) {
-        num = 6
-      } else {
-        num = 7
-      }
-      let array = Array(num).fill().map((_, i) => i)
+      // let num;
+      // if(window.outerWidth < 480) {
+      //   num = 4
+      // } else if(window.outerWidth < 768) {
+      //   num = 5
+      // } else if(window.outerWidth < 1024) {
+      //   num = 6
+      // } else {
+      //   num = 7
+      // }
+      let array = Array(7).fill().map((_, i) => moment(this.newDate).clone().add(i, 'days').format('YYYY-MM-DD'))
       return array
     },
     res() {
@@ -74,64 +69,51 @@ export default {
             return {left: '0%'}
             break;
         case arrival == moment(this.newDate).format('YYYY-MM-DD'):
-            return {left: '5%'}
+            return {left: '7%'}
             break;
         case arrival == moment(this.newDate).clone().add(1, 'day').format('YYYY-MM-DD'):
-            return {left: '20%'}
+            return {left: '21%'}
             break;
         case arrival == moment(this.newDate).clone().add(2, 'days').format('YYYY-MM-DD'):
-            return {left: '33%'}
+            return {left: '35%'}
             break;
         case arrival == moment(this.newDate).clone().add(3, 'days').format('YYYY-MM-DD'):
-            return {left: '48%'}
+            return {left: '49%'}
             break;
         case arrival == moment(this.newDate).clone().add(4, 'days').format('YYYY-MM-DD'):
-            return {left: '60%'}
+            return {left: '63%'}
             break;
         case arrival == moment(this.newDate).clone().add(5, 'days').format('YYYY-MM-DD'):
-            return {left: '75%'}
+            return {left: '77%'}
             break;
         case arrival == moment(this.newDate).clone().add(6, 'days').format('YYYY-MM-DD'):
-            return {left: '90%'}
+            return {left: '91%'}
             break;
         default:
             console.log('none')
       }
     },
     widthStyle(arrival, depart) {
-      let arr = moment(arrival)
-      let dep = moment(depart)
-      let first = moment(this.newDate)
-      let duration = moment.duration(dep.diff(arr));
-      let days = duration.asDays();
+      let arr = moment(arrival) //arrival date
+      let dep = moment(depart) //departure date
+      let first = moment(this.newDate) //current date
+      if(arr < first) {
+        arr = first
+      }
+      let duration = moment.duration(dep.diff(arr)); //difference from arrival to departure
+      let fromLeft = moment.duration(first.diff(arr)); //difference from arrival to now
+      let days = duration.asDays(); //+days between arrival and depart
+      let minusDays = fromLeft.asDays(); //-days between arrival and now
       let arrFormat = moment(arrival).format('YYYY, MM, DD')
       let firstFormat = moment(this.newDate).format('YYYY, MM, DD')
       let depFormat = moment(depart).format('YYYY, MM, DD')
-      switch(true) {
-        case arrFormat < firstFormat && firstFormat == depFormat:
-            console.log('YES')
-            return {width: '10%'}
-            break;
-        case days == 1:
-            return {width: '18%'}
-            break;
-        case days == 2:
-            return {width: '28%'}
-            break;
-        case days == 3:
-            return {width: '40%'}
-            break;
-        case days == 4:
-            return {width: '55%'}
-            break;
-        case days == 6:
-            return {width: '70%'}
-            break;
-        case days == 7:
-            return {width: '85%'}
-            break;
-        default:
-            console.log('none')
+      let width = 14.25 * days
+      if(arrFormat < firstFormat && firstFormat == depFormat) {
+        return {width: '7%'}
+      } else if(arrFormat < firstFormat) {
+        return {width: (width + 7) + '%'}
+      } else {
+        return {width: width + '%'}
       }
     }
   },
@@ -181,8 +163,19 @@ export default {
   position: absolute;
   height: 30px;
   width: 25%;
-  background: gray;
+  background: #009688;
   top: 10px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.calendar span p {
+  display: inline-block;
+  color: white;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 .calendar__header > div {

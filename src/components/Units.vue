@@ -1,8 +1,8 @@
 <template>
-  <ul>
-    <li>Units</li>
-    <li v-for="(item, index) in units">
-      {{item}}
+  <ul class="container">
+    <li class="header"><p>Units</p></li>
+    <li class="unit" v-for="(item, index) in units">
+      <p>{{item}}</p>
     </li>
   </ul>
 </template>
@@ -34,15 +34,25 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  border: 1px solid #e1e1e1;
+  border-left: 1px solid #e1e1e1;
+  border-top: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+  background: white;
 }
 li {
-  border-top: 1px solid #e1e1e1;
   display: grid;
   grid-auto-rows: 50px;
   align-items: center;
 }
-li:first-child {
+p {
+  border-top: 1px solid #e1e1e1;
+  margin: 0;
+  padding: 14px;
+}
+li:first-child p {
   border-top: 0px solid #e1e1e1;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 </style>
