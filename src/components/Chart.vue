@@ -50,12 +50,10 @@ export default {
     },
     arrive() {
       let arrive = moment(this.newDate).format('YYYY-MM-DD')
-      console.log(arrive)
       return arrive
     },
     leave() {
       let leaving = moment(this.newDate).clone().add(8, 'days').format('YYYY-MM-DD')
-      console.log(leaving)
       return leaving;
     },
     style() {
@@ -119,12 +117,7 @@ export default {
     }
   },
   mounted() {
-    let first = moment(this.newDate)
-    let end = moment(this.newDate).clone().add(1, 'day')
-    var duration = moment.duration(end.diff(first));
-    var hours = duration.asDays();
-    console.log(hours)
-    console.log(this.newDate)
+    
   },
   props: ['date', 'units']
 }
