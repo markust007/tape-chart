@@ -69,25 +69,25 @@ export default {
             return {left: '0%'}
             break;
         case arrival == moment(this.newDate).format('YYYY-MM-DD'):
-            return {left: '7%'}
+            return {left: '7.14%'}
             break;
         case arrival == moment(this.newDate).clone().add(1, 'day').format('YYYY-MM-DD'):
-            return {left: '21%'}
+            return {left: '21.42%'}
             break;
         case arrival == moment(this.newDate).clone().add(2, 'days').format('YYYY-MM-DD'):
-            return {left: '35%'}
+            return {left: '35.7%'}
             break;
         case arrival == moment(this.newDate).clone().add(3, 'days').format('YYYY-MM-DD'):
-            return {left: '49%'}
+            return {left: '49.98%'}
             break;
         case arrival == moment(this.newDate).clone().add(4, 'days').format('YYYY-MM-DD'):
-            return {left: '63%'}
+            return {left: '64.26%'}
             break;
         case arrival == moment(this.newDate).clone().add(5, 'days').format('YYYY-MM-DD'):
-            return {left: '77%'}
+            return {left: '78.54%'}
             break;
         case arrival == moment(this.newDate).clone().add(6, 'days').format('YYYY-MM-DD'):
-            return {left: '91%'}
+            return {left: '92.82%'}
             break;
         default:
             console.log('none')
@@ -107,7 +107,8 @@ export default {
       let arrFormat = moment(arrival).format('YYYY, MM, DD')
       let firstFormat = moment(this.newDate).format('YYYY, MM, DD')
       let depFormat = moment(depart).format('YYYY, MM, DD')
-      let width = 14.25 * days
+      let multiplier = 100 / this.days.length
+      let width = multiplier * days
       if(arrFormat < firstFormat && firstFormat == depFormat) {
         return {width: '7%'}
       } else if(arrFormat < firstFormat) {
