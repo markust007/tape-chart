@@ -7,8 +7,8 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  // base: '/client_projects/StudioB/models/',
-  base: '/',
+  base: '/tape-chart/',
+  // base: '/',
   routes: [
     {
       path: '/',
