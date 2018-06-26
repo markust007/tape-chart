@@ -117,7 +117,21 @@ export default {
     }
   },
   mounted() {
-    
+    //Get dates allowed for datepicker
+    let arr = []
+    let dep = []
+    let usedDates = []
+    let datesArray = []
+    let dates = this.res.map((item, index) => {
+      arr.push(moment(item.arrival))
+      dep.push(moment(item.depart))
+      let newDates = moment.duration(dep[index].diff(arr[index])).asDays()
+      datesArray.push(newDates)
+      usedDates.push(moment(item.arrival).format('YYYY, MM, DD'))
+      usedDates.push(arr[index].add(datesArray[index], 'days').format('YYYY, MM, DD'))
+      datesArray = [...(new Set(usedDates))]
+    });
+    console.log(datesArray)
   },
   props: ['date', 'units']
 }

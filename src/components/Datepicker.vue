@@ -19,7 +19,7 @@
         :flat="true"
         readonly
       ></v-text-field>
-      <v-date-picker v-model="date" no-title scrollable>
+      <v-date-picker v-model="date" no-title scrollable :allowed-dates="allowedDates">
         <v-spacer></v-spacer>
         <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
         <v-btn flat color="primary" @click="saveDate">OK</v-btn>
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+let datesArray = []
 import moment from 'moment'
 export default {
   name: 'Datepicker',
@@ -46,6 +47,9 @@ export default {
         // this.$emit('newDate', this.date)
         return moment(this.date).format('MMM Do YY');
       }
+    },
+    res() {
+      return this.$store.state.reservation
     }
   },
   methods: {
@@ -66,7 +70,24 @@ export default {
       } else {
         this.date = moment(this.date).add(7, 'days').format('YYYY-MM-DD')
       }
-    }
+    },
+    allowedDates: val => datesArray.indexOf(val) == -1
+  },
+  mounted() {
+    let arr = []
+    let dep = []
+    let usedDates = []
+    // let datesArray = []
+    let dates = this.res.map((item, index) => {
+      arr.push(moment(item.arrival))
+      dep.push(moment(item.depart))
+      let newDates = moment.duration(dep[index].diff(arr[index])).asDays()
+      datesArray.push(newDates)
+      usedDates.push(moment(item.arrival).format('YYYY-MM-DD'))
+      usedDates.push(arr[index].add(datesArray[index], 'days').format('YYYY-MM-DD'))
+      datesArray = [...(new Set(usedDates))]
+    });
+    console.log(datesArray)
   },
   props: []
 }
